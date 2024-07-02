@@ -2,6 +2,7 @@ import React from 'react';
 import Cita from './Cita';
 
 function Listado({ citas,eliminarCita }) {
+  console.log(citas)
   return (
     <>
       {citas.map((cita, index) => (

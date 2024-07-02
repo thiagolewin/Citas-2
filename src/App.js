@@ -5,22 +5,35 @@ import './App.css';
 import Listado from './Listado.jsx';
 import React, { useState } from 'react';
 import Cita from './Cita.jsx';
+import { useEffect } from 'react';
 function App() {
   const [citas, setCitas] = useState([]);
   const eliminarCita = (index)=> {
     alert("Quieres continuar?")
     const nuevasCitas = citas.filter((_, i) => i !== index);
     setCitas(nuevasCitas);
+    localStorage.setItem('citas', JSON.stringify(nuevasCitas));
   }
+  useEffect(() => {
+    const citasGuardadas = localStorage.getItem('citas');
+    if (citasGuardadas != "undefined" && citasGuardadas != "") {
+      setCitas(JSON.parse(localStorage.getItem('citas')));
+    } else {
+      setCitas([])
+    }
+  }, []);
   const Submit = (e)=> {
     e.preventDefault(); // Evita que se recargue la página al enviar el formulario
     alert("Quieres continuar?")
-    const nombre = e.target.mascota.value;
-    const dueño = e.target.propietario.value;
-    const fecha = e.target.fecha.value;
-    const hora = e.target.hora.value;
-    const sintomas = e.target.sintomas.value;
-    setCitas([...citas, {nombre, dueño, fecha, hora, sintomas}]);
+    const nuevaCita = {
+      nombre: e.target.mascota.value,
+      dueño: e.target.propietario.value,
+      fecha: e.target.fecha.value,
+      hora: e.target.hora.value,
+      sintomas: e.target.sintomas.value,
+    };
+    setCitas([...citas, nuevaCita]);
+    localStorage.setItem('citas', JSON.stringify([...citas, nuevaCita]));
   }
   return (
     <>
